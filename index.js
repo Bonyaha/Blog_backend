@@ -18,6 +18,7 @@ const unknownEndpoint = (request, response) => {
 app.use(cors())
 app.use(express.json())
 app.use(requestLogger)
+app.use(express.static('build'))
 
 const generateId = () => {
   const maxId = blogs.length > 0 ? Math.max(...blogs.map((blog) => blog.id)) : 0
