@@ -5,7 +5,7 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 
 const url =
-  'mongodb+srv://Roman:5dT2Z37kDLZxx0dW@cluster1.d7mltpu.mongodb.net/blogApp?retryWrites=true&w=majority'
+  'mongodb+srv://Roman:@cluster1.d7mltpu.mongodb.net/blogApp?retryWrites=true&w=majority'
 
 mongoose.set('strictQuery', false)
 mongoose.connect(url)
