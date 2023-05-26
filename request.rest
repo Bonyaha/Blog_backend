@@ -1,18 +1,18 @@
-GET http://localhost:3001/api/blogs
+GET http://localhost:3003/api/blogs
 
 ###
-POST http://localhost:3001/api/blogs HTTP/1.1
+POST http://localhost:3003/api/blogs HTTP/1.1
 content-type: application/json
 
-    {   
+{   
         "title": "CSS is easy",
         "author": "Jack Finch",
         "url": "http://something",
-        "likes": 9,
+        "likes": "9"
         
 }
 
 ###
-DELETE http://localhost:3001/api/blogs/3
+DELETE http://localhost:3003/api/blogs/3
 
 

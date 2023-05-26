@@ -2,6 +2,22 @@ const express = require('express')
 
 const app = express()
 const cors = require('cors')
+const mongoose = require('mongoose')
+
+const url =
+  'mongodb+srv://Roman:5dT2Z37kDLZxx0dW@cluster1.d7mltpu.mongodb.net/blogApp?retryWrites=true&w=majority'
+
+mongoose.set('strictQuery', false)
+mongoose.connect(url)
+
+const blogSchema = new mongoose.Schema({
+  title: String,
+  author: String,
+  url: String,
+  likes: String,
+})
+
+const Blog = mongoose.model('Blog', blogSchema)
 
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
@@ -52,9 +68,11 @@ let blogs = [
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
 })
+
 app.get('/api/blogs', (request, response) => {
-  response.json(blogs)
+  Blog.find({}).then((blogs) => response.json(blogs))
 })
+
 app.get('/api/blogs/:id', (request, response) => {
   const id = Number(request.params.id)
   const blog = blogs.find((blog) => blog.id === id)
@@ -70,16 +88,18 @@ app.post('/api/blogs/', (request, response) => {
     return response.status(400).json({ error: 'title is missing' })
   }
   //console.log(request.headers)
-  const blog = {
+  const blog = new Blog({
     title: body.title,
     author: body.author,
     url: body.url,
     likes: body.likes,
     id: generateId(),
-  }
-  blogs = blogs.concat(blog)
+  })
+
+  blog.save().then((savedBlog) => response.json(savedBlog))
   response.json(blog)
 })
+
 app.delete('/api/blogs/:id', (request, response) => {
   const id = Number(request.params.id)
   blogs = blogs.filter((blog) => blog.id !== id)
