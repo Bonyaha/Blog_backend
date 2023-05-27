@@ -1,30 +1,8 @@
 const express = require('express')
+const Blog = require('./models/blog')
 
 const app = express()
 const cors = require('cors')
-const mongoose = require('mongoose')
-
-const url =
-  'mongodb+srv://Roman:@cluster1.d7mltpu.mongodb.net/blogApp?retryWrites=true&w=majority'
-
-mongoose.set('strictQuery', false)
-mongoose.connect(url)
-
-const blogSchema = new mongoose.Schema({
-  title: String,
-  author: String,
-  url: String,
-  likes: String,
-})
-blogSchema.set('toJSON', {
-  transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString()
-    delete returnedObject._id
-    delete returnedObject.__v
-  },
-})
-
-const Blog = mongoose.model('Blog', blogSchema)
 
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
