@@ -18,7 +18,7 @@ const blogSchema = new mongoose.Schema({
   title: String,
   author: String,
   url: String,
-  likes: String,
+  likes: Number,
 })
 blogSchema.set('toJSON', {
   transform: (document, returnedObject) => {
