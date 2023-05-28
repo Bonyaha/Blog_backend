@@ -7,7 +7,7 @@ console.log('connecting to', url)
 
 mongoose
   .connect(url)
-  .then((result) => {
+  .then(() => {
     console.log('connected to MongoDB')
   })
   .catch((error) => {
@@ -15,8 +15,8 @@ mongoose
   })
 
 const blogSchema = new mongoose.Schema({
-  title: String,
-  author: String,
+  title: { type: String, required: true },
+  author: { type: String, required: true },
   url: String,
   likes: Number,
 })
