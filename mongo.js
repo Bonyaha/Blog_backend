@@ -7,7 +7,7 @@ if (process.argv.length < 3) {
 
 const password = process.argv[2]
 
-const url = `mongodb+srv://Roman:${password}@cluster1.d7mltpu.mongodb.net/blogApp?retryWrites=true&w=majority`
+const url = `mongodb+srv://Roman:${password}@cluster1.d7mltpu.mongodb.net/testBlogApp?retryWrites=true&w=majority`
 
 mongoose.set('strictQuery', false)
 mongoose.connect(url)
@@ -22,7 +22,7 @@ const blogSchema = new mongoose.Schema({
 const Blog = mongoose.model('Blog', blogSchema)
 
 const blog = new Blog({
-  title: 'Mongo is easy',
+  title: 'Testing is suck!',
   author: 'Jack Richi',
   url: 'www.sweet_pussy',
   likes: 777,
