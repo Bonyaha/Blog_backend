@@ -1,95 +1,159 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
-
+const helper = require('./test_helper')
 const api = supertest(app)
 const Blog = require('../models/blog')
 
-const blogs = [
-  {
-    _id: '5a422a851b54a676234d17f7',
-    title: 'React patterns',
-    author: 'Michael Chan',
-    url: 'https://reactpatterns.com/',
-    likes: 7,
-    __v: 0,
-  },
-  {
-    _id: '5a422aa71b54a676234d17f8',
-    title: 'Go To Statement Considered Harmful',
-    author: 'Edsger W. Dijkstra',
-    url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-    likes: 5,
-    __v: 0,
-  },
-]
 beforeEach(async () => {
   await Blog.deleteMany({})
-  let noteObject = new Blog(blogs[0])
-  await noteObject.save()
-  noteObject = new Blog(blogs[1])
-  await noteObject.save()
+  await Blog.insertMany(helper.initialBlogs)
 })
 
-test('blogs are returned as json', async () => {
-  await api
-    .get('/api/blogs')
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
+describe('when there is initially some blogs saved', () => {
+  test('blogs are returned as json', async () => {
+    await api
+      .get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+  })
+
+  test('all blogs are returned', async () => {
+    const response = await helper.blogsInDb()
+
+    expect(response).toHaveLength(helper.initialBlogs.length)
+  })
+
+  test('the first blog is about React patterns', async () => {
+    const response = await helper.blogsInDb()
+
+    const contents = response.map((r) => r.title)
+    expect(contents).toContain('React patterns')
+  })
+
+  test('there is a property named id', async () => {
+    const response = await helper.blogsInDb()
+
+    const ids = response.map((r) => r.id)
+    expect(ids[0]).toBeDefined()
+  })
 })
 
-test('there are two blogs', async () => {
-  const response = await api.get('/api/blogs')
+describe('viewing a specific blog', () => {
+  test('succeeds with a valid id', async () => {
+    const blogsAtStart = await helper.blogsInDb()
 
-  expect(response.body).toHaveLength(blogs.length)
+    const blogToView = blogsAtStart[0]
+
+    const resultBlog = await api
+      .get(`/api/blogs/${blogToView.id}`)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    expect(resultBlog.body).toEqual(blogToView)
+  })
+
+  test('fails with statuscode 404 if blog does not exist', async () => {
+    const validNonexistingId = await helper.nonExistingId()
+    await api.get(`/api/blogs/${validNonexistingId}`).expect(404)
+  })
+
+  test('fails with statuscode 400 if id is invalid', async () => {
+    const invalidId = '5a3d5da59070081a82a3445'
+
+    await api.get(`/api/blogs/${invalidId}`).expect(400)
+  })
 })
 
-test('the first blog is about Mongo', async () => {
-  const response = await api.get('/api/blogs')
+describe('addition of a new blog', () => {
+  test('a valid blog can be added', async () => {
+    const newBlog = {
+      title: 'Phyton',
+      author: 'Michael Chan',
+      url: 'https://reactpatterns.com/',
+      likes: 5,
+    }
 
-  const contents = response.body.map((r) => r.title)
-  expect(contents).toContain('React patterns')
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    const titles = blogsAtEnd.map((r) => r.title)
+
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+    expect(titles).toContain('Phyton')
+  })
+
+  test('blog without title or url are not added', async () => {
+    const newBlog = {
+      author: 'Michael Chan',
+      url: 'https://reactpatterns.com/',
+    }
+    await api.post('/api/blogs').send(newBlog).expect(400)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+  })
+
+  test('missing property "likes" default to 0', async () => {
+    const newBlog = {
+      title: 'Phyton + NodeJS',
+      author: 'Michael Chan',
+      url: 'https://reactpatterns.com/',
+    }
+    await api.post('/api/blogs').send(newBlog)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd[blogsAtEnd.length - 1].likes).toEqual(0)
+  })
 })
 
-test('there is a property named id', async () => {
-  const response = await api.get('/api/blogs')
+describe('deletion of a note', () => {
+  test('succeeds with status code 204 if id is valid', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToDelete = blogsAtStart[0]
 
-  const ids = response.body.map((r) => r.id)
-  expect(ids[0]).toBeDefined()
+    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
+
+    const titles = blogsAtEnd.map((r) => r.title)
+
+    expect(titles).not.toContain(blogToDelete.title)
+  })
 })
 
-test('a valid blog can be added', async () => {
-  const newBlog = {
-    title: 'Phyton',
-    author: 'Michael Chan',
-    url: 'https://reactpatterns.com/',
-    likes: 5,
-  }
+describe('modifying of blog', () => {
+  test('blog can be modified', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToModify = blogsAtStart[0]
+    console.log(`from start: ${blogToModify.likes}`)
 
-  await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(201)
-    .expect('Content-Type', /application\/json/)
+    blogToModify.likes = 777
 
-  const response = await api.get('/api/blogs')
+    console.log(`after change: ${blogToModify.likes}`)
 
-  const titles = response.body.map((r) => r.title)
+    blogToModify.url = 'https://pornhub.com/'
+    await api
+      .put(`/api/blogs/${blogToModify.id}`)
+      .send(blogToModify)
+      .expect('Content-Type', /application\/json/)
 
-  expect(response.body).toHaveLength(blogs.length + 1)
-  expect(titles).toContain('Phyton')
-})
+    const blogsAtEnd = await helper.blogsInDb()
 
-test('blog without title or url are not added', async () => {
-  const newBlog = {
-    author: 'Michael Chan',
-    url: 'https://reactpatterns.com/',
-  }
-  await api.post('/api/blogs').send(newBlog).expect(400)
+    console.log(`at the end: ${blogsAtEnd[0].likes}`)
 
-  const response = await api.get('/api/blogs')
-
-  expect(response.body).toHaveLength(blogs.length)
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+    expect(blogsAtEnd[0].likes).toBe(777)
+    expect(blogsAtEnd[0].url).toContain('https://pornhub.com/')
+  })
 })
 
 afterAll(async () => {
