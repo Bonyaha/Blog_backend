@@ -8,7 +8,8 @@ content-type: application/json
         "title": "Test",
         "author": "Steve Daniels",
         "url": "www.bla-bla4654",
-        "likes": 3
+        "likes": 3,
+        "userId":"6479eb6b572f4d3917dbd6c9"
         
 }
 

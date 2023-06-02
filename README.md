@@ -45,5 +45,5 @@ mongodb+srv://Roman:`<password>`@cluster1.d7mltpu.mongodb.net/?retryWrites=true&
 
 ### Testing
 
-The following command only runs the tests found in the tests/note_api.test.js file:npm test -- tests/note_api.test.js
+The following command only runs the tests found in the tests/note_api.test.js file:npm test -- tests/blog_api.test.js
 The -t option can be used for running tests with a specific name:npm test -- -t "a specific note is within the returned notes"
