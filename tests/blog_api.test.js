@@ -74,6 +74,7 @@ describe('addition of a new blog', () => {
       author: 'Michael Chan',
       url: 'https://reactpatterns.com/',
       likes: 5,
+      userId: '6479f0663cd2a6a98f788249',
     }
 
     await api
@@ -107,6 +108,7 @@ describe('addition of a new blog', () => {
       title: 'Phyton + NodeJS',
       author: 'Michael Chan',
       url: 'https://reactpatterns.com/',
+      userId: '6479f0663cd2a6a98f788249',
     }
     await api.post('/api/blogs').send(newBlog)
 
@@ -115,7 +117,7 @@ describe('addition of a new blog', () => {
   })
 })
 
-describe('deletion of a note', () => {
+describe('deletion of a blog', () => {
   test('succeeds with status code 204 if id is valid', async () => {
     const blogsAtStart = await helper.blogsInDb()
     const blogToDelete = blogsAtStart[0]
