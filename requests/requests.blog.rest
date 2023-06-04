@@ -5,7 +5,7 @@ POST http://localhost:3003/api/blogs HTTP/1.1
 content-type: application/json
 
 {   
-        "title": "Test",
+        "title": "NodeJs is cool",
         "author": "Steve Daniels",
         "url": "www.bla-bla4654",
         "likes": 3,
