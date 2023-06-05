@@ -3,13 +3,14 @@ GET http://localhost:3003/api/blogs
 ###
 POST http://localhost:3003/api/blogs HTTP/1.1
 content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRlc3QzIiwiaWQiOiI2NDdkZDNkZThiNjFlZDNiNjVlOGFkOGYiLCJpYXQiOjE2ODU5Njg4MjUsImV4cCI6MTY4NTk3MjQyNX0.CijLva9rXVlnZrMiBqFlt7YsF5AkSU8HqCj8xy701IE
 
 {   
-        "title": "NodeJs is cool",
+        "title": "Test2",
         "author": "Steve Daniels",
         "url": "www.bla-bla4654",
-        "likes": 3,
-        "userId":"6479eb6b572f4d3917dbd6c9"
+        "likes": 3
+        
         
 }
 
