@@ -14,6 +14,11 @@ usersRouter.get('/', async (request, response) => {
 usersRouter.post('/', async (request, response) => {
   const { username, name, password } = request.body
 
+  if (!password) {
+    return response.status(400).json({
+      error: 'Password is required',
+    })
+  }
   const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/
   if (!passwordRegex.test(password)) {
     return response.status(400).json({
