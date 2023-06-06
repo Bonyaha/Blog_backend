@@ -3,10 +3,10 @@ GET http://localhost:3003/api/blogs
 ###
 POST http://localhost:3003/api/blogs HTTP/1.1
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRlc3QiLCJpZCI6IjY0N2RlMmRiMGI3NjNiZDEwYjc0MjE2OCIsImlhdCI6MTY4NTk3NDM5OSwiZXhwIjoxNjg1OTc3OTk5fQ.WB0vW3tM8Z-i852jHIhN--BRhtysrtO0hoeyfz4fcwc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRlc3QiLCJpZCI6IjY0N2RlMmRiMGI3NjNiZDEwYjc0MjE2OCIsImlhdCI6MTY4NjA1NDAwNywiZXhwIjoxNjg2MDU3NjA3fQ.HlihOaJHgQ2Z9YJWVf167cKtitqUS_fxLtV7uJEY_VY
 
 {   
-        "title": "T2",
+        "title": "Test",
         "author": "Steve Daniels",
         "url": "www.bla-bla4654",
         "likes": 3
@@ -15,6 +15,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRlc
 }
 
 ###
-DELETE http://localhost:3003/api/blogs/64721e7e8250fcff7a77dc40
-
+DELETE http://localhost:3003/api/blogs/647f24896506ddc3578387b8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRlc3QiLCJpZCI6IjY0N2RlMmRiMGI3NjNiZDEwYjc0MjE2OCIsImlhdCI6MTY4NjA1NDAwNywiZXhwIjoxNjg2MDU3NjA3fQ.HlihOaJHgQ2Z9YJWVf167cKtitqUS_fxLtV7uJEY_VY
 

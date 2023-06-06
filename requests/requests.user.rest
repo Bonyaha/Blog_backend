@@ -10,3 +10,7 @@ content-type: application/json
     "password":"dNX3sTE3" 
      
 }
+
+###
+
+DELETE http://localhost:3003/api/users/647dd3de8b61ed3b65e8ad8f
