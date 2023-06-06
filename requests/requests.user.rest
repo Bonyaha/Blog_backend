@@ -5,7 +5,7 @@ POST http://localhost:3003/api/users/ HTTP/1.1
 content-type: application/json
 
 {
-    "username": "Test",
+    "username": "Test2",
     "name": "Roman",
     "password":"dNX3sTE3" 
      
@@ -13,4 +13,4 @@ content-type: application/json
 
 ###
 
-DELETE http://localhost:3003/api/users/647dd3de8b61ed3b65e8ad8f
+DELETE http://localhost:3003/api/users/647f2b2d395081035bf93684
