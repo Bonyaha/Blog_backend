@@ -1,5 +1,6 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
+const { userExtractor } = require('../utils/middleware')
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
@@ -16,7 +17,7 @@ blogsRouter.get('/:id', async (request, response) => {
   }
 })
 
-blogsRouter.post('/', async (request, response) => {
+blogsRouter.post('/', userExtractor, async (request, response) => {
   const body = request.body
   if (!body.title) {
     return response.status(400).json({ error: 'title is missing' })
@@ -44,12 +45,16 @@ blogsRouter.post('/', async (request, response) => {
   response.status(201).json(savedBlog)
 })
 
-blogsRouter.delete('/:id', async (request, response) => {
+blogsRouter.delete('/:id', userExtractor, async (request, response) => {
+  console.log('start of deletion')
   const user = request.user
+  console.log('user is: ', user.id)
+  console.log('request.params.id:', request.params.id)
 
   const blog = await Blog.findById(request.params.id)
+  console.log('after I found a blog')
   console.log('blog is: ', blog.user.toJSON())
-  console.log('user is: ', user.id)
+
   console.log(blog.user.toJSON() === user.id)
 
   if (blog && blog.user.toJSON() === user.id) {

@@ -39,6 +39,11 @@ const initialBlogs = [
     likes: 2,
   },
 ]
+const user = {
+  username: 'root',
+  name: 'Roman',
+  password: 'dNX3sTE3',
+}
 
 const blogsInDb = async () => {
   const blogs = await Blog.find({})
@@ -62,6 +67,7 @@ const usersInDb = async () => {
 }
 module.exports = {
   initialBlogs,
+  user,
   blogsInDb,
   nonExistingId,
   usersInDb,

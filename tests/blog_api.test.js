@@ -3,13 +3,40 @@ const supertest = require('supertest')
 const app = require('../app')
 const helper = require('./test_helper')
 const api = supertest(app)
+
 const Blog = require('../models/blog')
-const bcrypt = require('bcrypt')
 const User = require('../models/user')
+
+const loginWithTestUser = async () => {
+  const credentials = {
+    username: helper.user.username,
+    password: helper.user.password,
+  }
+  const response = await api
+    .post('/api/login')
+    .send(credentials)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  return response.body.token
+}
 
 beforeEach(async () => {
   await Blog.deleteMany({})
-  await Blog.insertMany(helper.initialBlogs)
+  await User.deleteMany({})
+
+  const result = await api.post('/api/users').send({
+    username: helper.user.username,
+    name: helper.user.name,
+    password: helper.user.password,
+  })
+
+  const userId = result.body.id
+  const blogs = helper.initialBlogs.map((blog) => ({
+    ...blog,
+    user: userId,
+  }))
+  await Blog.insertMany(blogs)
 })
 
 describe('when there is initially some blogs saved', () => {
@@ -74,11 +101,13 @@ describe('addition of a new blog', () => {
       author: 'Michael Chan',
       url: 'https://reactpatterns.com/',
       likes: 5,
-      userId: '6479f0663cd2a6a98f788249',
     }
+
+    const token = await loginWithTestUser()
 
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -96,7 +125,12 @@ describe('addition of a new blog', () => {
       author: 'Michael Chan',
       url: 'https://reactpatterns.com/',
     }
-    await api.post('/api/blogs').send(newBlog).expect(400)
+    const token = await loginWithTestUser()
+    await api
+      .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
+      .send(newBlog)
+      .expect(400)
 
     const blogsAtEnd = await helper.blogsInDb()
 
@@ -108,21 +142,45 @@ describe('addition of a new blog', () => {
       title: 'Phyton + NodeJS',
       author: 'Michael Chan',
       url: 'https://reactpatterns.com/',
-      userId: '6479f0663cd2a6a98f788249',
     }
-    await api.post('/api/blogs').send(newBlog)
+
+    const token = await loginWithTestUser()
+    await api
+      .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
+      .send(newBlog)
 
     const blogsAtEnd = await helper.blogsInDb()
     expect(blogsAtEnd[blogsAtEnd.length - 1].likes).toEqual(0)
+  })
+  test('if token is not provided blog is not added', async () => {
+    const newBlog = {
+      title: 'Test an app',
+      author: 'Jhon Doe',
+      url: 'https://fullstackopen.com/',
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(401)
+      .expect('Content-Type', /application\/json/)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
   })
 })
 
 describe('deletion of a blog', () => {
   test('succeeds with status code 204 if id is valid', async () => {
+    const token = await loginWithTestUser()
     const blogsAtStart = await helper.blogsInDb()
     const blogToDelete = blogsAtStart[0]
 
-    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .set('Authorization', `bearer ${token}`)
+      .expect(204)
 
     const blogsAtEnd = await helper.blogsInDb()
 
@@ -161,15 +219,6 @@ describe('modifying of blog', () => {
 })
 
 describe('when there is initially one user in db', () => {
-  beforeEach(async () => {
-    await User.deleteMany({})
-
-    const passwordHash = await bcrypt.hash('dNX3sTE3', 10)
-    const user = new User({ username: 'root', passwordHash })
-
-    await user.save()
-  })
-
   test('creation succeeds with a fresh username', async () => {
     const usersAtStart = await helper.usersInDb()
 
@@ -235,7 +284,7 @@ describe('when there is initially one user in db', () => {
     expect(usersAtEnd).toEqual(usersAtStart)
   })
 
-  test.only('creation fails with proper statuscode and message if password is shorter minimum allowed length', async () => {
+  test('creation fails with proper statuscode and message if password is shorter minimum allowed length', async () => {
     const usersAtStart = await helper.usersInDb()
 
     const newUser = {
