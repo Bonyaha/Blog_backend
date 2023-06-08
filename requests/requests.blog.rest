@@ -3,18 +3,18 @@ GET http://localhost:3003/api/blogs
 ###
 POST http://localhost:3003/api/blogs HTTP/1.1
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJvbWFuIiwiaWQiOiI2NDgwOGM3ZDY4YjQwZmEzMGIxZTcxMjYiLCJpYXQiOjE2ODYxNDYxOTUsImV4cCI6MTY4NjE0OTc5NX0.o3jzhX7ciuQKltNvr9RTHqtpD6WucxMTGVg8hXkyds8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNhc2h1bmthIiwiaWQiOiI2NDgxOTQ5OTE4MDY3MWMzNWYxZmQ1NmUiLCJpYXQiOjE2ODYyMTQ0NTMsImV4cCI6MTY4NjIxODA1M30.iG95VyNzwmVUQbywhCZ5Zd4hUX8kbBS7A-CxiqkoAAs
 
 {   
-        "title": "React patterns",
-        "author": "Steve Daniels",
-        "url": "https://reactpatterns.com/",
+        "title": "Go To Statement Considered Harmful",
+        "author": "Edsger W. Dijkstra",
+        "url": "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
         "likes": 3
         
         
 }
 
 ###
-DELETE http://localhost:3003/api/blogs/64804b6f5094ddfb76e3301a
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJvbWFuIiwiaWQiOiI2NDgwOGM3ZDY4YjQwZmEzMGIxZTcxMjYiLCJpYXQiOjE2ODYxNDYxOTUsImV4cCI6MTY4NjE0OTc5NX0.o3jzhX7ciuQKltNvr9RTHqtpD6WucxMTGVg8hXkyds8
+DELETE http://localhost:3003/api/blogs/64819a67d670626b8283df25
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNhc2h1bmthIiwiaWQiOiI2NDgxOTQ5OTE4MDY3MWMzNWYxZmQ1NmUiLCJpYXQiOjE2ODYyMTQ0NTMsImV4cCI6MTY4NjIxODA1M30.iG95VyNzwmVUQbywhCZ5Zd4hUX8kbBS7A-CxiqkoAAs
 

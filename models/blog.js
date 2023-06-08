@@ -7,6 +7,7 @@ const blogSchema = new mongoose.Schema({
   likes: Number,
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 })
+/* toJSON method is used then to convert object to String, just like toString method of JS */
 blogSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()

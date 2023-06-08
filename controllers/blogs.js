@@ -46,16 +46,9 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
 })
 
 blogsRouter.delete('/:id', userExtractor, async (request, response) => {
-  console.log('start of deletion')
   const user = request.user
-  console.log('user is: ', user.id)
-  console.log('request.params.id:', request.params.id)
 
   const blog = await Blog.findById(request.params.id)
-  console.log('after I found a blog')
-  console.log('blog is: ', blog.user.toJSON())
-
-  console.log(blog.user.toJSON() === user.id)
 
   if (blog && blog.user.toJSON() === user.id) {
     user.blogs = user.blogs.filter(
@@ -65,8 +58,8 @@ blogsRouter.delete('/:id', userExtractor, async (request, response) => {
     await Blog.findByIdAndRemove(request.params.id)
     return response.status(204).end()
   }
-  return response.status(401).json({
-    error: 'Unauthorized to access the blog',
+  return response.status(404).json({
+    error: 'Not found such blog',
   })
 })
 
