@@ -3,13 +3,13 @@ GET http://localhost:3003/api/blogs
 ###
 POST http://localhost:3003/api/blogs HTTP/1.1
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNhc2h1bmthIiwiaWQiOiI2NDgxOTQ5OTE4MDY3MWMzNWYxZmQ1NmUiLCJpYXQiOjE2ODYyMTQ0NTMsImV4cCI6MTY4NjIxODA1M30.iG95VyNzwmVUQbywhCZ5Zd4hUX8kbBS7A-CxiqkoAAs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNhc2h1bmthIiwiaWQiOiI2NDgxOTQ5OTE4MDY3MWMzNWYxZmQ1NmUiLCJpYXQiOjE2ODYyMTY3NjQsImV4cCI6MTY4NjIyMDM2NH0.5lbMUsINOwvMqmPr74gSKbva_lFoHDbyeKM257A2pJw
 
 {   
-        "title": "Go To Statement Considered Harmful",
-        "author": "Edsger W. Dijkstra",
-        "url": "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
-        "likes": 3
+        "title": "TDD harms architecture",
+        "author": "Robert C. Martin",
+        "url": "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
+        "likes": 1
         
         
 }
