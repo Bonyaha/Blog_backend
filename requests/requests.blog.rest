@@ -3,12 +3,12 @@ GET http://localhost:3003/api/blogs
 ###
 POST http://localhost:3003/api/blogs HTTP/1.1
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRlc3QyIiwiaWQiOiI2NDdmNGEwMmNlY2QyYTc5OGIzYWQ4MzEiLCJpYXQiOjE2ODYxMjk1MDMsImV4cCI6MTY4NjEzMzEwM30.ZCILcGN3MXJWkH_JQI29fTYDuCmPxD9AOz7FNQhyzq0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJvbWFuIiwiaWQiOiI2NDgwOGM3ZDY4YjQwZmEzMGIxZTcxMjYiLCJpYXQiOjE2ODYxNDYxOTUsImV4cCI6MTY4NjE0OTc5NX0.o3jzhX7ciuQKltNvr9RTHqtpD6WucxMTGVg8hXkyds8
 
 {   
-        "title": "Test",
+        "title": "React patterns",
         "author": "Steve Daniels",
-        "url": "www.bla-bla4654",
+        "url": "https://reactpatterns.com/",
         "likes": 3
         
         
@@ -16,5 +16,5 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRlc
 
 ###
 DELETE http://localhost:3003/api/blogs/64804b6f5094ddfb76e3301a
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRlc3QyIiwiaWQiOiI2NDdmNGEwMmNlY2QyYTc5OGIzYWQ4MzEiLCJpYXQiOjE2ODYxMjk1MDMsImV4cCI6MTY4NjEzMzEwM30.ZCILcGN3MXJWkH_JQI29fTYDuCmPxD9AOz7FNQhyzq0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJvbWFuIiwiaWQiOiI2NDgwOGM3ZDY4YjQwZmEzMGIxZTcxMjYiLCJpYXQiOjE2ODYxNDYxOTUsImV4cCI6MTY4NjE0OTc5NX0.o3jzhX7ciuQKltNvr9RTHqtpD6WucxMTGVg8hXkyds8
 

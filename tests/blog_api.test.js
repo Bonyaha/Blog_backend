@@ -73,12 +73,12 @@ describe('viewing a specific blog', () => {
     const blogsAtStart = await helper.blogsInDb()
 
     const blogToView = blogsAtStart[0]
-
     const resultBlog = await api
       .get(`/api/blogs/${blogToView.id}`)
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
+    blogToView.user = blogToView.user.toString()
     expect(resultBlog.body).toEqual(blogToView)
   })
 

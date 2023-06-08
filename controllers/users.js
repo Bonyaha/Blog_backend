@@ -8,6 +8,7 @@ usersRouter.get('/', async (request, response) => {
     author: 1,
     likes: 1,
   })
+  console.log(users)
   response.json(users)
 })
 
