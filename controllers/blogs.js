@@ -3,7 +3,10 @@ const Blog = require('../models/blog')
 const { userExtractor } = require('../utils/middleware')
 
 blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
+  const blogs = await Blog.find({}).populate('user', {
+    username: 1,
+    name: 1,
+  })
   response.json(blogs)
 })
 
@@ -19,13 +22,6 @@ blogsRouter.get('/:id', async (request, response) => {
 
 blogsRouter.post('/', userExtractor, async (request, response) => {
   const body = request.body
-  if (!body.title) {
-    return response.status(400).json({ error: 'title is missing' })
-  } else if (!body.author) {
-    return response.status(400).json({ error: 'author is missing' })
-  } else if (!body.url) {
-    return response.status(400).json({ error: 'url is missing' })
-  }
 
   const user = request.user
 
@@ -38,6 +34,7 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
   })
 
   const savedBlog = await blog.save()
+  await savedBlog.populate('user', { username: 1, name: 1 })
 
   user.blogs = user.blogs.concat(savedBlog._id)
   await user.save()
@@ -65,6 +62,7 @@ blogsRouter.delete('/:id', userExtractor, async (request, response) => {
 
 blogsRouter.put('/:id', async (request, response) => {
   const body = request.body
+  console.log('body of request is ', body)
   const blog = {
     title: body.title,
     author: body.author,
@@ -74,6 +72,8 @@ blogsRouter.put('/:id', async (request, response) => {
   const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {
     new: true,
   })
+  console.log('updatedBlog is ', updatedBlog)
+  await updatedBlog.populate('user', { username: 1, name: 1 })
   response.json(updatedBlog)
 })
 
