@@ -42,7 +42,8 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
   response.status(201).json(savedBlog)
 })
 
-blogsRouter.delete('/:id', userExtractor, async (request, response) => {
+blogsRouter.delete('/', userExtractor, async (request, response) => {
+  console.log('request is ', request)
   const user = request.user
 
   const blog = await Blog.findById(request.params.id)
