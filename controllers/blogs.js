@@ -31,6 +31,7 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
     url: body.url,
     likes: body.likes || 0,
     user: user.id,
+    checked: body.checked,
   })
 
   const savedBlog = await blog.save()
@@ -43,40 +44,47 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
 })
 
 blogsRouter.delete('/', userExtractor, async (request, response) => {
-  console.log('request is ', request)
   const user = request.user
 
-  const blog = await Blog.findById(request.params.id)
-
-  if (blog && blog.user.toJSON() === user.id) {
+  const blogIds = request.body.ids
+  console.log('blogIds are ', blogIds)
+  const result = await Blog.deleteMany({ _id: { $in: blogIds }, user: user.id })
+  console.log('result is ', result)
+  if (result.deletedCount > 0) {
+    // Remove deleted blogs from the user's blogs array
     user.blogs = user.blogs.filter(
-      (blogId) => blogId.toString() !== request.params.id
+      (blogId) => !blogIds.includes(blogId.toString())
     )
     await user.save()
-    await Blog.findByIdAndRemove(request.params.id)
+
     return response.status(204).end()
   }
   return response.status(404).json({
-    error: 'Not found such blog',
+    error: 'Blog has been removed',
   })
 })
 
 blogsRouter.put('/:id', async (request, response) => {
   const body = request.body
-
+  console.log('body is ', body)
   const blog = {
     title: body.title,
     author: body.author,
     url: body.url,
     likes: body.likes || 0,
+    checked: body.checked,
   }
   const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {
     new: true,
   })
-
-  await updatedBlog.populate('user', { username: 1, name: 1 })
-
-  response.json(updatedBlog)
+  console.log('updated blog is ', updatedBlog)
+  if (updatedBlog) {
+    await updatedBlog.populate('user', { username: 1, name: 1 })
+    response.json(updatedBlog)
+  }
+  return response.status(401).json({
+    error: 'Blog has been removed',
+  })
 })
 
 module.exports = blogsRouter
