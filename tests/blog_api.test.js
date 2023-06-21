@@ -176,10 +176,12 @@ describe('deletion of a blog', () => {
     const token = await loginWithTestUser()
     const blogsAtStart = await helper.blogsInDb()
     const blogToDelete = blogsAtStart[0]
+    const ids = [blogToDelete.id]
 
     await api
-      .delete(`/api/blogs/${blogToDelete.id}`)
+      .delete('/api/blogs/')
       .set('Authorization', `bearer ${token}`)
+      .send({ ids }) // Pass the IDs as an object with a property named 'ids'
       .expect(204)
 
     const blogsAtEnd = await helper.blogsInDb()
