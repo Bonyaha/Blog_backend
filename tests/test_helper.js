@@ -40,7 +40,7 @@ const initialBlogs = [
   },
 ]
 const user = {
-  username: 'root',
+  username: 'Test',
   name: 'Roman',
   password: 'dNX3sTE3',
 }
