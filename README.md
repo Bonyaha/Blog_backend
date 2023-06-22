@@ -3,8 +3,10 @@
 1. npm start(normal start)
 2. npm run dev (start with nodemon for restarting it when changes are made)
 3. npm test (for testing)
-4. npm run lint(for running linting)
-   If you clone the project, run the npm install command before starting the application with npm start or npm run dev.
+4. npm run start:test (for cypress running)
+5. npm run lint(for running linting)
+
+   **If you clone the project, run the npm install command before starting the application with npm start or npm run dev.**
 
 npm update - for updating the dependencies of the project
 
