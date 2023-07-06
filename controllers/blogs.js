@@ -49,7 +49,7 @@ blogsRouter.delete('/', userExtractor, async (request, response) => {
   const blogIds = request.body.ids
   console.log('blogIds are ', blogIds)
   const result = await Blog.deleteMany({ _id: { $in: blogIds }, user: user.id })
-  console.log('result is ', result)
+
   if (result.deletedCount > 0) {
     // Remove deleted blogs from the user's blogs array
     user.blogs = user.blogs.filter(
