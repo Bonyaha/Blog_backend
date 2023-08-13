@@ -32,6 +32,7 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
     likes: body.likes || 0,
     user: user.id,
     checked: body.checked,
+    comments: []
   })
 
   const savedBlog = await blog.save()
@@ -42,6 +43,28 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
 
   response.status(201).json(savedBlog)
 })
+
+blogsRouter.post('/:id/comments', userExtractor, async (request, response) => {
+  const body = request.body
+  console.log('body in /:id/comments', body)
+  const user = request.user
+
+  const blog = await Blog.findById(request.params.id)
+  if (blog) {
+    blog.comments.push(body.comments)
+    const savedBlog = await blog.save()
+    await savedBlog.populate('user', { username: 1, name: 1 })
+
+    user.blogs = user.blogs.concat(savedBlog._id)
+    await user.save()
+    response.status(201).json(savedBlog)
+  } else {
+    response.status(404).json({ error: 'Blog not found' })
+  }
+
+})
+
+
 
 blogsRouter.delete('/', userExtractor, async (request, response) => {
   const user = request.user
@@ -73,6 +96,7 @@ blogsRouter.put('/:id', async (request, response) => {
     url: body.url,
     likes: body.likes || 0,
     checked: body.checked,
+    comments: body.comments
   }
   const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {
     new: true,
