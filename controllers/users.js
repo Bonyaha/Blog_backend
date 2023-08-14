@@ -9,7 +9,7 @@ usersRouter.get('/', async (request, response) => {
     url: 1,
     likes: 1,
   })
-  console.log(users)
+  console.log('users are', users)
   response.json(users)
 })
 

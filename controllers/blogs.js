@@ -44,10 +44,10 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
   response.status(201).json(savedBlog)
 })
 
-blogsRouter.post('/:id/comments', userExtractor, async (request, response) => {
+blogsRouter.put('/:id/comments', async (request, response) => {
   const body = request.body
   console.log('body in /:id/comments', body)
-  const user = request.user
+
 
   const blog = await Blog.findById(request.params.id)
   if (blog) {
@@ -55,8 +55,6 @@ blogsRouter.post('/:id/comments', userExtractor, async (request, response) => {
     const savedBlog = await blog.save()
     await savedBlog.populate('user', { username: 1, name: 1 })
 
-    user.blogs = user.blogs.concat(savedBlog._id)
-    await user.save()
     response.status(201).json(savedBlog)
   } else {
     response.status(404).json({ error: 'Blog not found' })
@@ -64,28 +62,6 @@ blogsRouter.post('/:id/comments', userExtractor, async (request, response) => {
 
 })
 
-
-
-blogsRouter.delete('/', userExtractor, async (request, response) => {
-  const user = request.user
-
-  const blogIds = request.body.ids
-  console.log('blogIds are ', blogIds)
-  const result = await Blog.deleteMany({ _id: { $in: blogIds }, user: user.id })
-
-  if (result.deletedCount > 0) {
-    // Remove deleted blogs from the user's blogs array
-    user.blogs = user.blogs.filter(
-      (blogId) => !blogIds.includes(blogId.toString())
-    )
-    await user.save()
-
-    return response.status(204).end()
-  }
-  return response.status(404).json({
-    error: 'Blog has been removed',
-  })
-})
 
 blogsRouter.put('/:id', async (request, response) => {
   const body = request.body
@@ -111,4 +87,24 @@ blogsRouter.put('/:id', async (request, response) => {
   })
 })
 
+blogsRouter.delete('/', userExtractor, async (request, response) => {
+  const user = request.user
+
+  const blogIds = request.body.ids
+  console.log('blogIds are ', blogIds)
+  const result = await Blog.deleteMany({ _id: { $in: blogIds }, user: user.id })
+
+  if (result.deletedCount > 0) {
+    // Remove deleted blogs from the user's blogs array
+    user.blogs = user.blogs.filter(
+      (blogId) => !blogIds.includes(blogId.toString())
+    )
+    await user.save()
+
+    return response.status(204).end()
+  }
+  return response.status(404).json({
+    error: 'Blog has been removed',
+  })
+})
 module.exports = blogsRouter
