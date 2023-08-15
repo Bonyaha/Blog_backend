@@ -46,8 +46,6 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
 
 blogsRouter.put('/:id/comments', async (request, response) => {
   const body = request.body
-  console.log('body in /:id/comments', body)
-
 
   const blog = await Blog.findById(request.params.id)
   if (blog) {
@@ -59,7 +57,6 @@ blogsRouter.put('/:id/comments', async (request, response) => {
   } else {
     response.status(404).json({ error: 'Blog not found' })
   }
-
 })
 
 
