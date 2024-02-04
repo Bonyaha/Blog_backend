@@ -9,6 +9,7 @@ const loginRouter = require('./controllers/login')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
+const path = require('path')
 
 mongoose.set('strictQuery', false)
 
@@ -31,6 +32,12 @@ app.use(middleware.tokenExtractor)
 app.use('/api/blogs', blogsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
+
+// Serve the React app for any route not handled by Express
+app.get('*', (req, res) => {
+  // Send the 'index.html' file from the 'build' directory
+  res.sendFile(path.join(__dirname, 'build', 'index.html'))
+})
 
 if (process.env.NODE_ENV === 'test') {
   const testingRouter = require('./controllers/testing')
