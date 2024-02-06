@@ -52,3 +52,7 @@ The -t option can be used for running tests with a specific name:npm test -- -t 
 
 Link to blogs samples:
 https://raw.githubusercontent.com/fullstack-hy2020/misc/master/blogs_for_test.md
+
+### Build and run the application
+1. docker build -t blog-app . && docker run -p 3000:3003 blog-app
+2. docker compose up
