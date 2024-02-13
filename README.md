@@ -54,7 +54,7 @@ Link to blogs samples:
 https://raw.githubusercontent.com/fullstack-hy2020/misc/master/blogs_for_test.md
 
 ### Build and run the application
-1. docker build -t blog-backend . && docker run -p 3000:3003 blog-backend
+1. docker build -t blog-backend . && docker run -p 3003:3003 blog-backend
 2. docker compose up
 3. docker compose -f docker-compose.dev.yml up -d
 4. $ MONGO_URL=mongodb://the_username:the_password@localhost:3456/the_database npm run dev
