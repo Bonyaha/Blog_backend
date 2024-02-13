@@ -43,7 +43,7 @@ node mongo.js password - command for interacting with the database (instead 'pas
 
 MongoDb:
 url for connection:
-mongodb+srv://Roman:`<password>`@cluster1.d7mltpu.mongodb.net/?retryWrites=true&w=majority (Replace `<password>` with the password for the Roman user)
+mongodb+srv://Roman:`<password>`@cluster1.d7mltpu.mongodb.net/blogApp?retryWrites=true&w=majority (Replace `<password>` with the password for the Roman user)
 
 ### Testing
 
@@ -54,5 +54,8 @@ Link to blogs samples:
 https://raw.githubusercontent.com/fullstack-hy2020/misc/master/blogs_for_test.md
 
 ### Build and run the application
-1. docker build -t blog-app . && docker run -p 3000:3003 blog-app
+1. docker build -t blog-backend . && docker run -p 3000:3003 blog-backend
 2. docker compose up
+3. docker compose -f docker-compose.dev.yml up -d
+4. $ MONGO_URL=mongodb://the_username:the_password@localhost:3456/the_database npm run dev
+5. MONGO_URL=mongodb://Roman:dNX3sTE3@localhost:3456/blog-app npm run dev
