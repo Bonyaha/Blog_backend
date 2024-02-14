@@ -77,7 +77,7 @@ blogsRouter.put('/:id', async (request, response) => {
   console.log('updated blog is ', updatedBlog)
   if (updatedBlog) {
     await updatedBlog.populate('user', { username: 1, name: 1 })
-    response.json(updatedBlog)
+    return response.json(updatedBlog)
   }
   return response.status(401).json({
     error: 'Blog has been removed',
