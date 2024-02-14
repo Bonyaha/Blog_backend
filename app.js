@@ -33,7 +33,8 @@ app.use('/api/blogs', blogsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
 
-// Serve the React app for any route not handled by Express
+/* Serve the React app for any route not handled by Express
+(when user reload the page at any tab, except for main,it sends the request, like this: /about,/create new etc., and this cause the error of unknown address)*/
 app.get('*', (req, res) => {
   // Send the 'index.html' file from the 'build' directory
   res.sendFile(path.join(__dirname, 'build', 'index.html'))
