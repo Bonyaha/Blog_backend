@@ -62,7 +62,6 @@ blogsRouter.put('/:id/comments', async (request, response) => {
 
 blogsRouter.put('/:id', async (request, response) => {
   const body = request.body
-  console.log('body is ', body)
   const blog = {
     title: body.title,
     author: body.author,
@@ -74,10 +73,9 @@ blogsRouter.put('/:id', async (request, response) => {
   const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {
     new: true,
   })
-  console.log('updated blog is ', updatedBlog)
   if (updatedBlog) {
     await updatedBlog.populate('user', { username: 1, name: 1 })
-    response.json(updatedBlog)
+    return response.json(updatedBlog)
   }
   return response.status(401).json({
     error: 'Blog has been removed',
@@ -88,7 +86,6 @@ blogsRouter.delete('/', userExtractor, async (request, response) => {
   const user = request.user
 
   const blogIds = request.body.ids
-  console.log('blogIds are ', blogIds)
   const result = await Blog.deleteMany({ _id: { $in: blogIds }, user: user.id })
 
   if (result.deletedCount > 0) {
