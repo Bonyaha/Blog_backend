@@ -57,5 +57,7 @@ https://raw.githubusercontent.com/fullstack-hy2020/misc/master/blogs_for_test.md
 1. docker build -t blog-backend . && docker run -p 3003:3003 blog-backend
 2. docker compose up
 3. docker compose -f docker-compose.dev.yml up -d
-4. $ MONGO_URL=mongodb://the_username:the_password@localhost:3456/the_database npm run dev
-5. MONGO_URL=mongodb://Roman:dNX3sTE3@localhost:3456/blog-app npm run dev
+
+## added anonymous volume in the docker-compose.dev.yml file:
+/usr/src/app/node_modules
+it was done to prevent the node_modules being linked from the host to the container(If the host has a different OS to the container then the app will fail)

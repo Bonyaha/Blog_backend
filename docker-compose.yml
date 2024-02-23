@@ -7,4 +7,4 @@ services:
     build: . # Declares where to build if image is not found
     ports:
       # Declares the ports to publish
-      - 3000:3003
+      - 3003:3003

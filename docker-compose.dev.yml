@@ -1,12 +1,15 @@
 version: '3.8'
 
 services:
-  mongo:
-    image: mongo
+  server:
+    image: blog-backend-dev
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
     ports:
-      - 3456:27017
-    env_file: ./.env
-    environment:
-      MONGODB_URI: ${MONGODB_URI}
-      TEST_MONGODB_URI: ${TEST_MONGODB_URI}
-      PORT: ${PORT}
+      - 3003:3003
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules # anonymous volume for node_modules only
+      #environment:
+      #- MONGO_URL=mongodb+srv://#Roman:5dT2Z37kDLZxx0dW@cluster1.d7mltpu.mongodb.net/#blogApp?retryWrites=true&w=majority
